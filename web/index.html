@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Vue Command</title>
+    <style>
+        form{ border:solid 1px;
+            padding: 2px;}
+    </style>
+</head>
+<body>
+<div id="app" class="app">
+    <h5>v-text, v-html, v-on(@), v-show, v-if, v-bind, v-for , v-model
+    </h5>
+    <div :style="left">
+        <ul>
+            <li v-for="(item,index) in urlList">
+                <a :href="item">{{item}}</a>
+            </li>
+        </ul>
+    </div>
+    <div :style="right">
+        <ul>
+            <li v-for="(item,index) in formUrlList">
+
+                <form v-show="item.sign=='update'" :action="item.url" :method="item.method">
+                    <!-- 模拟修改操作
+                        1，原始数据为：1，tom, 123456 , tom@163.com ,18
+                        2,密码不能被修改
+                        3，表单回显，模拟操作直接再表单填写对应的属性值
+                    -->
+                    {{item.sign}}:
+                    <div >
+                        <input type="hidden" name="id" value="1"><br/>
+                        username:<input type="text" name="username" value="Tom"/><br>
+                        email:<input type="text" name="email" value="tom@163.com"/><br>
+                        username:<input type="text" name="age" value="12"/><br>
+                        <input type="submit" :value="'test '+item.sign">
+                    </div>
+                </form>
+                <form v-if="item.sign=='pojo'" :action="item.url" :method="item.method">
+                    {{item.sign}}:
+                    <!--测试pojo 接受请求参数-->
+                    <div >
+                        username:<input type="test" name="username"><br/>
+                        password:<input type="password" name="password"><br/>
+                        email:<input type="text" name="email"><br/>
+                        age:<input type="text" name="age"><br/>
+                        city:<input type="text" name="address.city"><br/>
+                        province:<input type="text" name="address.province"><br/>
+                    </div>
+                    <!-- 测试实现REST 架构4中请求-->
+<!--                    <input v-show="item.sign.indexOf('rest')>-1" type="input" name="_method">-->
+
+                    <input type="submit" :value="'test '+item.sign">
+                </form>
+                <form v-if="item.sign=='rest'"  :action="item.url" :method="item.method">
+                    {{item.sign}}:<input type="input" name="_method">
+                    <input type="submit" :value="'test '+item.sign">
+                </form>
+                <br/>
+            </li>
+        </ul>
+    </div>
+
+</div>
+<!--  开发环境版本，包含了有帮助的命令行警告 -->
+<script src="js/vue.js"></script>
+<script src="js/axios.min.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            left:"float:left; width:49%",
+            right:"float:left; width: 49%",
+            message: '',
+            urlList:[
+                "springmvc/testRedirect",
+                "springmvc/testView",
+                "springmvc/testViewAndViewResolver",
+                "springmvc/testSessionAttributes",
+                "springmvc/testMap",
+                "springmvc/testModelAndView",
+                "springmvc/testServletAPI",
+                "springmvc/testCookieValue",
+                "springmvc/testRequestHeader",
+                "springmvc/testRequestParam?username=horace&age=18",
+                "springmvc/testRest/1",
+                "helloworld",
+                "springmvc/springmvctest",
+                "springmvc/testPathVariable/1"
+            ],
+            formUrlList:[
+                {url:"springmvc/testModelAttribute",method:"post",sign:"update"},
+                {url:"springmvc/testRest/1",method:"post",sign:"rest"},
+                {url:"springmvc/testPojo" ,method:"post",sign:"pojo"}
+            ]
+        },
+        methods:{
+            
+        }
+    })
+
+
+</script>
+</body>
+</html>
